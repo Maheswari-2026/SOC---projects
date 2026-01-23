@@ -1,36 +1,33 @@
 # SSH Failed Login Activity – SOC Analysis
 
 ## Objective
-To understand how Linux authentication logs are used by a SOC analyst to detect suspicious login activity.
+To analyze Linux authentication logs and identify failed SSH login attempts.
 
 ## Environment
-- Operating System: Kali Linux
-- Log Source: systemd journal
-- Service: OpenSSH (SSH)
+- OS: Kali Linux
+- Log Source: systemd journal (SSH logs)
 
-## Logs Analyzed
-- journalctl (SSH related logs)
-- sshd-session authentication events
+## Tools Used
+- journalctl
+- grep
+- SSH service
 
-## Observed Events
-Multiple failed SSH login attempts were observed using an invalid username.
+## Methodology
+1. Generated SSH login attempts using an invalid user.
+2. Monitored system logs using journalctl.
+3. Filtered failed authentication attempts using grep.
 
-Example log entries:
-- Failed password for invalid user
-- Invalid user login attempts
-- Repeated failures from the same source
-
-## Analysis
-The logs show repeated failed authentication attempts within a short time window.
-Such behavior is commonly associated with brute-force attacks.
-In this case, the source IP address was `::1` (localhost), confirming the activity was generated locally for testing and learning purposes.
+## Findings
+- Multiple failed SSH login attempts detected.
+- Invalid user "testuser" attempted to authenticate.
+- Source IP address was ::1 (localhost).
+- Repeated failures indicate possible brute-force or user enumeration activity.
 
 ## Conclusion
-No real attack was detected.
-The failed login attempts were intentionally generated to understand how SSH brute-force attempts appear in logs.
+The system successfully logged and detected unauthorized SSH login attempts. Log analysis confirms that authentication failures are clearly recorded and traceable.
 
 ## Recommendations
-- Monitor SSH authentication logs regularly
-- Disable SSH service when not required
-- Implement protections such as fail2ban
-- Use strong passwords or key-based authentication
+- Disable SSH access for unused users.
+- Implement fail2ban to block repeated failed attempts.
+- Monitor SSH logs continuously in SOC environments.
+
